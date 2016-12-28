@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "none",
+		"sourceMap": false,
+		"outDir": "./example/",
+		"outFile": "./example/app.js"
+	}
+}
