@@ -32,7 +32,9 @@ module cncnet
             {
                 embed = document.createElement("div") as HTMLDivElement;
                 embed.id = this.createUniqueStreamId(profile);
+                embed.classList.add("twitch-profile-embed")
                 document.body.appendChild(embed);
+
                 // This only gets called once
                 this.addTwitchPlayer(profile, embed);
             }
@@ -48,7 +50,7 @@ module cncnet
                 }
                 
                 profileInfo.id = "profile_" + embed.id;
-                profileInfo.classList.add("profile");
+                profileInfo.classList.add("twitch-profile-bio");
                 profileInfo.innerHTML =
                 "<div class='bio'>" 
                         + "<div class='profile'>"
