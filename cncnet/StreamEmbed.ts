@@ -15,11 +15,9 @@ module cncnet
 
         public addProfile(profile: ITwitchProfile): void
         {
-            console.log(this.profiles.indexOf(profile));
             if(this.profiles.indexOf(profile) == -1)
-            {
                 this.profiles.push(profile);
-            }
+
             this.updateEmbed(profile);
         }
 
@@ -48,8 +46,8 @@ module cncnet
                     + "<ul class='list-unstyled'>"
                         + "<li>Playing : " + profile.stream.game + "</li>"
                         + "<li>Average FPS: " + profile.stream.average_fps.toFixed(1) + "</li>"
-                        + "<li>Total Views: " + profile.stream.channel.views + "</li>"
-                        + "<li>Followers: " + profile.stream.channel.followers + "</li>"
+                        + "<li>Total Views: " + profile.stream.channel.views.toLocaleString() + "</li>"
+                        + "<li>Followers: " + profile.stream.channel.followers.toLocaleString() + "</li>"
                     + "</ul>";
             + "</div>";
         
@@ -58,14 +56,12 @@ module cncnet
 
         private createUniqueStreamId(profile: ITwitchProfile): string
         {
-            console.log("Creating unique id");
             return "stream_" + profile.stream.channel.display_name;
         }
 
         private getUniqueStreamId(profile: ITwitchProfile): string
         {
-            console.log("Getting unique id");
             return "stream_" + profile.stream.channel.display_name;
-        } 
+        }
     }
 }

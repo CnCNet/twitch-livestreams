@@ -78,10 +78,8 @@ var cncnet;
             this.profiles = [];
         }
         StreamEmbed.prototype.addProfile = function (profile) {
-            console.log(this.profiles.indexOf(profile));
-            if (this.profiles.indexOf(profile) == -1) {
+            if (this.profiles.indexOf(profile) == -1)
                 this.profiles.push(profile);
-            }
             this.updateEmbed(profile);
         };
         StreamEmbed.prototype.updateEmbed = function (profile) {
@@ -105,18 +103,16 @@ var cncnet;
                     + "<ul class='list-unstyled'>"
                     + "<li>Playing : " + profile.stream.game + "</li>"
                     + "<li>Average FPS: " + profile.stream.average_fps.toFixed(1) + "</li>"
-                    + "<li>Total Views: " + profile.stream.channel.views + "</li>"
-                    + "<li>Followers: " + profile.stream.channel.followers + "</li>"
+                    + "<li>Total Views: " + profile.stream.channel.views.toLocaleString() + "</li>"
+                    + "<li>Followers: " + profile.stream.channel.followers.toLocaleString() + "</li>"
                     + "</ul>";
             +"</div>";
             return embed;
         };
         StreamEmbed.prototype.createUniqueStreamId = function (profile) {
-            console.log("Creating unique id");
             return "stream_" + profile.stream.channel.display_name;
         };
         StreamEmbed.prototype.getUniqueStreamId = function (profile) {
-            console.log("Getting unique id");
             return "stream_" + profile.stream.channel.display_name;
         };
         return StreamEmbed;
