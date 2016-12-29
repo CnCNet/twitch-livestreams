@@ -23,9 +23,10 @@ Optionally add stream chat to your embedded streams.
 ### Basic setup
     var container = document.querySelector(".twitch-container");
     var config = {
-      clientId: "xxx",
+      clientId: "yourTwitchClientId",
       url: "app.json"
     };
+    // Optional Filters
     var filters = ["red alert", "Red Alert 1"];
     var stream = new cncnet.Stream(config, filters);
     var streamEmbed = new cncnet.StreamEmbed(container);
@@ -50,3 +51,6 @@ Optionally add stream chat to your embedded streams.
     
 #### Add a profile to be embedded
     streamEmbed.addProfile(...)
+
+## Example
+See the 'example' folder for a full usage example. 
