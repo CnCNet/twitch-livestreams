@@ -3,6 +3,13 @@
 		"target": "ES5",
 		"module": "none",
 		"sourceMap": false,
+		"files": [
+			"cncnet",
+			"cncnet.ts",
+			"./cncnet/Stream.ts",
+			"./cncnet/StreamEmbed.ts"
+		],
+		"watch": true,
 		"outDir": "./example/",
 		"outFile": "./example/app.js"
 	}

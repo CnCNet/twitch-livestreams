@@ -1,35 +1,4 @@
-/*
-/// <reference path="typings/index.d.ts" />
-
-window.onload = function() {
-    // TODO Tidy up into something simple
-    // Basic Usuage Example
-
-    var container : HTMLDivElement = document.querySelector(".twitch-container") as HTMLDivElement;
-    
-    var config : IStreamConfig = {
-        clientId: "cds8o89o71q4a4us2desr58fo3tyizd",
-        url: "app.json" // "https://cncnet.org/app_json/streams.php"
-    };
-    
-    var filters: Array<string> = ["tom Clancy's Rainbow Six: siege", "red alert"];
-    var stream = new cncnet.Stream(config);
-    var streamEmbed = new cncnet.StreamEmbed(container);
-    
-    var timer = setInterval(function(){
-        var liveProfiles = stream.liveProfiles;
-        
-        if(liveProfiles != null)
-        {
-            for (var i: number = 0; i < liveProfiles.length; i++)
-            {
-                var profile : ITwitchProfile = liveProfiles[i];
-                streamEmbed.addProfile(profile);
-            }
-        }
-    }, 3000);
-};
-*/ 
+/// <reference path="../typings/index.d.ts" />
 var cncnet;
 (function (cncnet) {
     var Stream = (function () {
@@ -66,7 +35,7 @@ var cncnet;
             for (var i = 0; i < this.profiles.length; i++) {
                 var profile = this.profiles[i];
                 $.ajaxSetup({ headers: { "Client-ID": this.clientId } });
-                $.ajax(this.TWITCH_API_URL + profile['name'])
+                $.ajax(this.TWITCH_API_URL + profile.username)
                     .done(function (response) { return _this.onLiveTwitchProfilesFound(response); });
             }
         };
@@ -90,13 +59,17 @@ var cncnet;
     }());
     cncnet.Stream = Stream;
 })(cncnet || (cncnet = {}));
+/// <reference path="../typings/index.d.ts" />
 var cncnet;
 (function (cncnet) {
     var StreamEmbed = (function () {
-        function StreamEmbed(container) {
+        function StreamEmbed(container, chat) {
+            if (chat === void 0) { chat = false; }
+            this.TWITCH_CHAT_URL = "https://www.twitch.tv/";
             this.container = container;
             this.embedded = [];
             this.profiles = [];
+            this.chat = chat;
         }
         StreamEmbed.prototype.addProfile = function (profile) {
             if (this.profiles.indexOf(profile) == -1)
@@ -113,6 +86,8 @@ var cncnet;
                 this.container.appendChild(embed);
                 // This only gets called once
                 this.addTwitchPlayer(profile, embed);
+                if (this.chat)
+                    this.addTwitchChat(profile, embed);
             }
             else {
                 // TODO - Bit messy tidy at some point.
@@ -155,6 +130,16 @@ var cncnet;
             if (iframe == null) {
                 embed.appendChild(player);
             }
+        };
+        StreamEmbed.prototype.addTwitchChat = function (profile, embed) {
+            var twitchChat = document.createElement("div");
+            twitchChat.classList.add("chat");
+            var chatIframe = document.createElement("iframe");
+            chatIframe.src = this.TWITCH_CHAT_URL + profile.stream.channel.display_name + "/chat";
+            chatIframe.width = "500";
+            chatIframe.height = "400";
+            twitchChat.appendChild(chatIframe);
+            embed.appendChild(twitchChat);
         };
         StreamEmbed.prototype.createUniqueStreamId = function (profile) {
             return "stream_" + profile.stream.channel.display_name;

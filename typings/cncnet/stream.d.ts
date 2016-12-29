@@ -46,3 +46,8 @@ interface IStreamConfig
     url: string;
     clientId: string;
 }
+
+interface IStreamProfile
+{
+    username: string;
+}

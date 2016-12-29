@@ -1,10 +1,11 @@
+/// <reference path="../typings/index.d.ts" />
 module cncnet
 {
     export class Stream
     {
         private url: string;
         private clientId: string;
-        private profiles: Array<string>;
+        private profiles: Array<IStreamProfile>;
         private profilesLive: Array<ITwitchProfile>;
         private filters: Array<string>;
 
@@ -29,10 +30,10 @@ module cncnet
 
         private getProfiles(): void
         {
-            $.ajax(this.url).done((response: Array<string>) => this.onProfilesFound(response));
+            $.ajax(this.url).done((response: Array<IStreamProfile>) => this.onProfilesFound(response));
         }
 
-        private onProfilesFound(response: Array<string>)
+        private onProfilesFound(response: Array<IStreamProfile>)
         {
             this.profiles = response;
             this.getLiveTwitchProfiles();
@@ -45,9 +46,9 @@ module cncnet
             
             for (var i: number = 0; i < this.profiles.length; i++)
             {
-                var profile = this.profiles[i] as string;
+                var profile : IStreamProfile = this.profiles[i] as IStreamProfile;
                 $.ajaxSetup({ headers: { "Client-ID": this.clientId }});
-                $.ajax(this.TWITCH_API_URL + profile['name'])
+                $.ajax(this.TWITCH_API_URL + profile.username)
                     .done((response: ITwitchProfile) => this.onLiveTwitchProfilesFound(response));
             }
         }

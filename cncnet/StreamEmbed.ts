@@ -1,3 +1,4 @@
+/// <reference path="../typings/index.d.ts" />
 module cncnet
 {
     declare var Twitch: any;
@@ -6,13 +7,16 @@ module cncnet
     {
         private container: HTMLDivElement;
         private embedded: Array<HTMLDivElement>;
+        private chat: boolean;
         private profiles: Array<ITwitchProfile>;
+        private readonly TWITCH_CHAT_URL: string = "https://www.twitch.tv/";
 
-        constructor(container: HTMLDivElement)
+        constructor(container: HTMLDivElement, chat: boolean = false)
         {   
             this.container = container;
             this.embedded = [];
             this.profiles = [];
+            this.chat = chat;
         }
 
         public addProfile(profile: ITwitchProfile): void
@@ -36,6 +40,8 @@ module cncnet
                 this.container.appendChild(embed);
                 // This only gets called once
                 this.addTwitchPlayer(profile, embed);
+                if(this.chat)
+                    this.addTwitchChat(profile, embed);
             }
             else
             {
@@ -88,6 +94,20 @@ module cncnet
             {
                 embed.appendChild(player);
             }            
+        }
+
+        private addTwitchChat(profile: ITwitchProfile, embed: HTMLDivElement): void
+        {
+            var twitchChat : HTMLDivElement = document.createElement("div");
+            twitchChat.classList.add("chat");
+            
+            var chatIframe = document.createElement("iframe") as HTMLIFrameElement;
+            chatIframe.src = this.TWITCH_CHAT_URL + profile.stream.channel.display_name + "/chat";
+            chatIframe.width = "500";
+            chatIframe.height = "400";
+
+            twitchChat.appendChild(chatIframe);
+            embed.appendChild(twitchChat);
         }
 
         private createUniqueStreamId(profile: ITwitchProfile): string
