@@ -44,6 +44,7 @@ Optionally add stream chat to your embedded streams.
         }
     }, 3000);    
 
+## Methods
 #### Returns array of live profiles
     stream.liveProfiles
     
