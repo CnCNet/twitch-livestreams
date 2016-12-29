@@ -51,3 +51,5 @@ interface IStreamProfile
 {
     username: string;
 }
+
+declare var Twitch: any;

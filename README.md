@@ -54,3 +54,10 @@ Optionally add stream chat to your embedded streams.
 
 ## Example
 See the 'example' folder for a full usage example. 
+
+# Developing
+This project is built using TypeScript. Gulp is configured to watch over cncnet/* folder.
+Any project specific code is not left in this repo. Only an example.ts remains.
+
+- run `npm-install`
+- run `gulp-watch`

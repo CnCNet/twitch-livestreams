@@ -12,29 +12,26 @@
 <div class="twitch-container"></div>
 
 <script>
-var config = {
-  clientId: "yourTwitchClientId",
-  url: "app.json"
-};
+    var config = {
+        clientId: "yourTwitchClientId",
+        url: "app.json"
+    };
 
-var container = document.querySelector(".twitch-container");
-var stream = new cncnet.Stream(config);
-var streamEmbed = new cncnet.StreamEmbed(container);
+    var container = document.querySelector(".twitch-container");
+    var stream = new cncnet.Stream(config);
+    var streamEmbed = new cncnet.StreamEmbed(container);
 
-var timer = setInterval(function(){
-    console.log("Polling");
-    var liveProfiles = stream.liveProfiles;
-    console.log(liveProfiles);
-
-    if(liveProfiles != null)
-    {
-        for (var i = 0; i < liveProfiles.length; i++)
+    var timer = setInterval(function(){
+        var liveProfiles = stream.liveProfiles;
+        if(liveProfiles != null)
         {
-            var profile = liveProfiles[i];
-            streamEmbed.addProfile(profile);
+            for (var i = 0; i < liveProfiles.length; i++)
+            {
+                var profile = liveProfiles[i];
+                streamEmbed.addProfile(profile);
+            }
         }
-    }
-}, 3000);  
+    }, 3000);  
 </script>
 </body>
 </html>

@@ -1,8 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 module cncnet
 {
-    declare var Twitch: any;
-    
     export class StreamEmbed
     {
         private container: HTMLDivElement;

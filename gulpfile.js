@@ -13,11 +13,5 @@ gulp.task('default', function () {
 });
 
 gulp.task('watch', function () {
-    return watch('cncnet/**/*.ts', { ignoreInitial: false })
-        .pipe(ts({
-            noImplicitAny: true,
-            target: 'ES5',
-            out: 'cncnet-twitch-app.js'
-        }))
-        .pipe(gulp.dest('example/'));
+    gulp.watch('cncnet/*.ts', ['default']);
 });
