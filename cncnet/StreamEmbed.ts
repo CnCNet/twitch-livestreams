@@ -32,26 +32,37 @@ module cncnet
             
             if(embed == null)
             {
+                // This only gets called once
                 embed = document.createElement("div") as HTMLDivElement;
                 embed.id = this.createUniqueStreamId(profile);
-                embed.classList.add("twitch-profile-embed")
+                embed.classList.add("twitch-profile-embed");
                 this.container.appendChild(embed);
-                // This only gets called once
-                this.addTwitchPlayer(profile, embed);
-                if(this.chat)
-                    this.addTwitchChat(profile, embed);
             }
             else
             {
-                // TODO - Bit messy tidy at some point.
                 var profileInfo: HTMLDivElement = document.getElementById("profile_" + embed.id) as HTMLDivElement;
 
                 if(profileInfo == null)
                 {
+                    // We only want to initialize this block once
                     profileInfo = document.createElement("div") as HTMLDivElement;
                     embed.appendChild(profileInfo);
+
+                    // Check Twitch Player exists already
+                    var iframe = embed.getElementsByTagName("iframe")[0] as HTMLIFrameElement;
+                    if(iframe == null)
+                    {
+                        this.addTwitchPlayer(profile, embed);
+                        
+                        // // If chat is enabled
+                        if(this.chat)
+                        {
+                            this.addTwitchChat(profile, embed);
+                        }
+                    }                    
                 }
                 
+                // We want to update this on a regular occasion
                 profileInfo.id = "profile_" + embed.id;
                 profileInfo.classList.add("twitch-profile-bio");
                 profileInfo.innerHTML =
@@ -74,7 +85,7 @@ module cncnet
             }
         }
 
-        private addTwitchPlayer(profile: ITwitchProfile, embed: HTMLDivElement): void
+        private addTwitchPlayer(profile: ITwitchProfile, embed: HTMLDivElement): HTMLDivElement
         {
             var options = 
             {
@@ -86,12 +97,7 @@ module cncnet
             var player = new Twitch.Player(embed.id, options);
             player.pause();
 
-            // If Twitch exists already, no need to add another
-            var iframe = embed.getElementsByTagName("iframe")[0];
-            if(iframe == null)
-            {
-                embed.appendChild(player);
-            }            
+            return player;
         }
 
         private addTwitchChat(profile: ITwitchProfile, embed: HTMLDivElement): void

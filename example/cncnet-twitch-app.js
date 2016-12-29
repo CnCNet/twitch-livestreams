@@ -80,22 +80,29 @@ var cncnet;
             var streamId = this.getUniqueStreamId(profile);
             var embed = document.getElementById(streamId);
             if (embed == null) {
+                // This only gets called once
                 embed = document.createElement("div");
                 embed.id = this.createUniqueStreamId(profile);
                 embed.classList.add("twitch-profile-embed");
                 this.container.appendChild(embed);
-                // This only gets called once
-                this.addTwitchPlayer(profile, embed);
-                if (this.chat)
-                    this.addTwitchChat(profile, embed);
             }
             else {
-                // TODO - Bit messy tidy at some point.
                 var profileInfo = document.getElementById("profile_" + embed.id);
                 if (profileInfo == null) {
+                    // We only want to initialize this block once
                     profileInfo = document.createElement("div");
                     embed.appendChild(profileInfo);
+                    // Check Twitch Player exists already
+                    var iframe = embed.getElementsByTagName("iframe")[0];
+                    if (iframe == null) {
+                        this.addTwitchPlayer(profile, embed);
+                        // // If chat is enabled
+                        if (this.chat) {
+                            this.addTwitchChat(profile, embed);
+                        }
+                    }
                 }
+                // We want to update this on a regular occasion
                 profileInfo.id = "profile_" + embed.id;
                 profileInfo.classList.add("twitch-profile-bio");
                 profileInfo.innerHTML =
@@ -125,11 +132,7 @@ var cncnet;
             };
             var player = new Twitch.Player(embed.id, options);
             player.pause();
-            // If Twitch exists already, no need to add another
-            var iframe = embed.getElementsByTagName("iframe")[0];
-            if (iframe == null) {
-                embed.appendChild(player);
-            }
+            return player;
         };
         StreamEmbed.prototype.addTwitchChat = function (profile, embed) {
             var twitchChat = document.createElement("div");

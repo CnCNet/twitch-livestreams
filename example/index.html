@@ -13,13 +13,13 @@
 
 <script>
     var config = {
-        clientId: "yourTwitchClientId",
+        clientId: "cds8o89o71q4a4us2desr58fo3tyizd",
         url: "app.json"
     };
 
     var container = document.querySelector(".twitch-container");
     var stream = new cncnet.Stream(config);
-    var streamEmbed = new cncnet.StreamEmbed(container);
+    var streamEmbed = new cncnet.StreamEmbed(container, true);
 
     var timer = setInterval(function(){
         var liveProfiles = stream.liveProfiles;
