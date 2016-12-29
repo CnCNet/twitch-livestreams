@@ -10,22 +10,21 @@ window.onload = function() {
         clientId: "cds8o89o71q4a4us2desr58fo3tyizd",
         url: "app.json" // "https://cncnet.org/app_json/streams.php"
     };
-
+    
+    var filters: Array<string> = ["tom Clancy's Rainbow Six: siege", "red alert"];
     var stream = new cncnet.Stream(config);
     var streamEmbed = new cncnet.StreamEmbed(container);
     
     var timer = setInterval(function(){
-        var liveUsernames = stream.liveUsernames;
+        var liveProfiles = stream.liveProfiles;
         
-        if(liveUsernames != null)
+        if(liveProfiles != null)
         {
-            for (var i: number = 0; i < liveUsernames.length; i++)
+            for (var i: number = 0; i < liveProfiles.length; i++)
             {
-                var user : ITwitchProfile = liveUsernames[i];
-                streamEmbed.addProfile(user);
+                var profile : ITwitchProfile = liveProfiles[i];
+                streamEmbed.addProfile(profile);
             }
         }
-
-        console.log("Live Usernames: ", liveUsernames);
     }, 3000);    
 };

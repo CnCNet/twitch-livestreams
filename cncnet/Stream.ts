@@ -4,59 +4,72 @@ module cncnet
     {
         private url: string;
         private clientId: string;
-        private usernames: Array<string>;
-        private usernamesLive: Array<ITwitchProfile>;
+        private profiles: Array<string>;
+        private profilesLive: Array<ITwitchProfile>;
+        private filters: Array<string>;
 
         private readonly TWITCH_API_URL: string = "https://api.twitch.tv/kraken/streams/";
 
-        constructor(config: IStreamConfig)
+        constructor(config: IStreamConfig, filters: Array<string> = null)
         {
             this.url = config.url;
             this.clientId = config.clientId
-            this.usernames = [];
-            this.usernamesLive = [];
+            this.filters = filters;
+            this.profiles = [];
+            this.profilesLive = [];
 
-            this.getUsernames();
+            this.getProfiles();
         }
 
-        public get liveUsernames(): Array<ITwitchProfile>
+        public get liveProfiles(): Array<ITwitchProfile>
         {
-            this.getUsernames();
-            return this.usernamesLive;
+            this.getProfiles();
+            return this.profilesLive;
         }
 
-        private getUsernames(): void
+        private getProfiles(): void
         {
-            $.ajax(this.url).done((response: Array<string>) => this.onUsernamesFound(response));
+            $.ajax(this.url).done((response: Array<string>) => this.onProfilesFound(response));
         }
 
-        private onUsernamesFound(response: Array<string>)
+        private onProfilesFound(response: Array<string>)
         {
-            this.usernames = response;
-            this.getLiveTwitchUsernames();
+            this.profiles = response;
+            this.getLiveTwitchProfiles();
         }
 
-        private getLiveTwitchUsernames(): void
+        private getLiveTwitchProfiles(): void
         {
             // TODO - Rate limit
-            this.usernamesLive = [];
+            this.profilesLive = [];
             
-            for (var i: number = 0; i < this.usernames.length; i++)
+            for (var i: number = 0; i < this.profiles.length; i++)
             {
-                var user = this.usernames[i] as string;
+                var profile = this.profiles[i] as string;
                 $.ajaxSetup({ headers: { "Client-ID": this.clientId }});
-                $.ajax(this.TWITCH_API_URL + user['name'])
-                    .done((response: ITwitchProfile) => this.onLiveTwitchUsernamesFound(response));
+                $.ajax(this.TWITCH_API_URL + profile['name'])
+                    .done((response: ITwitchProfile) => this.onLiveTwitchProfilesFound(response));
             }
         }
 
-        private onLiveTwitchUsernamesFound(response: ITwitchProfile): void
+        private onLiveTwitchProfilesFound(response: ITwitchProfile): void
         {
+            // If stream is live
             if(response.stream != null)
             {
-                if(this.usernamesLive.indexOf(response))
+                if(this.filters != null)
                 {
-                    this.usernamesLive.push(response);
+                    // Filter channels by game
+                    var arr : Array<string> = this.filters.map(function(x){ return x.toLowerCase() });
+                    if(arr.indexOf(response.stream.game.toLowerCase()) != -1)
+                    {
+                        this.profilesLive.push(response);
+                    }
+                }
+                else
+                {
+                    // No filters supplied
+                    this.profilesLive.push(response);
                 }
             }
         }

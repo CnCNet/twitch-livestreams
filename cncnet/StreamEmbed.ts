@@ -33,8 +33,7 @@ module cncnet
                 embed = document.createElement("div") as HTMLDivElement;
                 embed.id = this.createUniqueStreamId(profile);
                 embed.classList.add("twitch-profile-embed")
-                document.body.appendChild(embed);
-
+                this.container.appendChild(embed);
                 // This only gets called once
                 this.addTwitchPlayer(profile, embed);
             }
@@ -83,11 +82,10 @@ module cncnet
             var player = new Twitch.Player(embed.id, options);
             player.pause();
 
+            // If Twitch exists already, no need to add another
             var iframe = embed.getElementsByTagName("iframe")[0];
-            console.log("Iframe found", iframe);
             if(iframe == null)
             {
-                console.log("Adding Player to Embed");
                 embed.appendChild(player);
             }            
         }
