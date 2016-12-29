@@ -49,7 +49,7 @@ interface IStreamConfig
 
 interface IStreamProfile
 {
-    username: string;
+    name: string;
 }
 
 declare var Twitch: any;

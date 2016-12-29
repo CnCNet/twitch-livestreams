@@ -35,7 +35,7 @@ var cncnet;
             for (var i = 0; i < this.profiles.length; i++) {
                 var profile = this.profiles[i];
                 $.ajaxSetup({ headers: { "Client-ID": this.clientId } });
-                $.ajax(this.TWITCH_API_URL + profile.username)
+                $.ajax(this.TWITCH_API_URL + profile.name)
                     .done(function (response) { return _this.onLiveTwitchProfilesFound(response); });
             }
         };

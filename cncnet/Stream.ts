@@ -48,7 +48,7 @@ module cncnet
             {
                 var profile : IStreamProfile = this.profiles[i] as IStreamProfile;
                 $.ajaxSetup({ headers: { "Client-ID": this.clientId }});
-                $.ajax(this.TWITCH_API_URL + profile.username)
+                $.ajax(this.TWITCH_API_URL + profile.name)
                     .done((response: ITwitchProfile) => this.onLiveTwitchProfilesFound(response));
             }
         }
