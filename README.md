@@ -21,6 +21,7 @@ Optionally add stream chat to your embedded streams.
 ## Usage
 
 ### Basic setup
+    var container = document.querySelector(".twitch-container");
     var config = {
       clientId: "xxx",
       url: "app.json"
@@ -30,7 +31,6 @@ Optionally add stream chat to your embedded streams.
     var streamEmbed = new cncnet.StreamEmbed(container);
     
 ### Check usernames for updates every X seconds
-
     var timer = setInterval(function(){
         var liveProfiles = stream.liveProfiles;
         

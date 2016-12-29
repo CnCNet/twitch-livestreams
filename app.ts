@@ -1,3 +1,4 @@
+/*
 /// <reference path="typings/index.d.ts" />
 
 window.onload = function() {
@@ -28,3 +29,4 @@ window.onload = function() {
         }
     }, 3000);    
 };
+*/
